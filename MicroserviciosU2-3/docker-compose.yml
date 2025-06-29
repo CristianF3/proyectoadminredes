@@ -30,7 +30,7 @@ services:
     volumes:
       - task_data:/app/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://task-service:5001/api/users/health"]
+      test: ["CMD", "curl", "-f", "http://task-service:5001/api/tasks/health"]
       interval: 30s
       timeout: 10s
       retries: 5
