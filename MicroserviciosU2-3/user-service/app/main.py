@@ -15,7 +15,7 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/health")
+@app.get("/users/health")
 def health():
     return {"status": "ok"}
 
