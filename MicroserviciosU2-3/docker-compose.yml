@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
 
   user-service:
@@ -6,17 +8,17 @@ services:
     container_name: user-service
     networks:
       - backend-network
+    expose:
+      - "5000"
     environment:
       - DATABASE_URL=sqlite:///./user_service.db
     volumes:
       - user_data:/app/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://user-service:5000/health"]
+      test: ["CMD", "curl", "-f", "user-service:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 5
-    expose:
-      - "5000"
 
   task-service:
     build:
@@ -24,37 +26,50 @@ services:
     container_name: task-service
     networks:
       - backend-network
+    expose:
+      - "5001"
     environment:
       - DATABASE_URL=sqlite:///./task_service.db
       - USER_SERVICE_URL=http://user-service:5000
     volumes:
       - task_data:/app/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://task-service:5001/health"]
+      test: ["CMD", "curl", "-f", "task-service:5001/health"]
       interval: 30s
       timeout: 10s
       retries: 5
-    expose:
-      - "5001"
 
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
     restart: always
-    ports:
-      - "80:80"       # HTTP
-      - "443:443"     # HTTPS
-      - "81:81"       # Dashboard admin NPM
+    expose:
+      - "81"
     networks:
       - backend-network
     volumes:
       - npm_data:/data
       - npm_letsencrypt:/etc/letsencrypt
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:81/api/nginx/proxy-hosts"]
+      test: ["CMD", "curl", "-f", "nginx-proxy-manager:81/api/nginx/proxy-hosts"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+  nginx-reverse:
+    image: nginx:alpine
+    container_name: nginx-reverse
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - user-service
+      - task-service
+      - nginx-proxy-manager
+    networks:
+      - backend-network
 
 networks:
   backend-network:
