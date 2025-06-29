@@ -4,7 +4,7 @@ from app import models, schemas, crud, database
 
 models.Base.metadata.create_all(bind=database.engine)
 
-app = FastAPI()
+app = FastAPI(title="User Service", root_path="/api")
 
 # Dependency para obtener una sesión de DB
 def get_db():

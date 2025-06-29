@@ -5,7 +5,8 @@ from app.database import engine, SessionLocal, Base
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="User Service")
+app = FastAPI(title="User Service", root_path="/api")
+
 
 def get_db():
     db = SessionLocal()
