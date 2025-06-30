@@ -60,30 +60,27 @@ Al iniciar sesión por primera vez, se te pedirá que cambies estos datos.
 
 ## 🌐 Conectar tu dominio
 
-1. Apunta tu dominio o subdominio (ej: `midominio.com`) a la IP pública de tu servidor.
-2. Entra al panel de Nginx Proxy Manager.
-3. Ve a **"Proxy Hosts" > "Add Proxy Host"**:
-   - **Domain Names**: `midominio.com`
-   - **Forward Hostname/IP**: `miip`
-   - **Forward Port**: `81`
-4. Agregar Custom locations
-   - **location**:
-    `/admmin`
-   - **Forward Hostname/IP**: `miip`
-   - **Forward Port**: `81`
+1. Apunta tu dominio o subdominio (ej: `midominio.com`) a la IP pública de tu servidor.  
+2. Entra al panel de Nginx Proxy Manager.  
+3. Ve a **"Proxy Hosts" > "Add Proxy Host"**:  
+   - **Domain Names**: `midominio.com`  
+   - **Forward Hostname/IP**: `miip`  
+   - **Forward Port**: `81`  
 
+4. Agregar **Custom locations**:  
 
-   - **location**:
-    `/api/tasks/`
-   - **Forward Hostname/IP**: `miip`
-   - **Forward Port**: `5001`
-   - **location**:
+   - **location**: `/admmin`  
+     - **Forward Hostname/IP**: `miip`  
+     - **Forward Port**: `81`  
 
-   
-    `user-service`
-   - **Forward Hostname/IP**: `miip`
-   - **Forward Port**: `5000`
----
+   - **location**: `/api/tasks/`  
+     - **Forward Hostname/IP**: `miip`  
+     - **Forward Port**: `5001`  
+
+   - **location**: `/api/users/`  
+     - **Forward Hostname/IP**: `miip`  
+     - **Forward Port**: `5000`
+
 
 ## 🧹 Detener los servicios
 
