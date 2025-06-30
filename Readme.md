@@ -71,11 +71,15 @@ Al iniciar sesión por primera vez, se te pedirá que cambies estos datos.
     `/admmin`
    - **Forward Hostname/IP**: `miip`
    - **Forward Port**: `81`
+
+
    - **location**:
     `/api/tasks/`
    - **Forward Hostname/IP**: `miip`
    - **Forward Port**: `5001`
    - **location**:
+
+   
     `user-service`
    - **Forward Hostname/IP**: `miip`
    - **Forward Port**: `5000`
