@@ -18,10 +18,12 @@ def get_db():
 def health_check():
     return {"status": "ok"}
 
+@app.post("/tasks", response_model=schemas.Task)
 @app.post("/tasks/", response_model=schemas.Task)
 def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
     return crud.create_task(db, task)
 
+@app.get("/tasks", response_model=schemas.Task)
 @app.get("/tasks/", response_model=list[schemas.Task])
 def read_tasks(user_id: int = Query(None), db: Session = Depends(get_db)):
     if user_id is not None:
