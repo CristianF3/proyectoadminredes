@@ -66,6 +66,19 @@ Al iniciar sesión por primera vez, se te pedirá que cambies estos datos.
    - **Domain Names**: `midominio.com`
    - **Forward Hostname/IP**: `miip`
    - **Forward Port**: `81`
+4. Agregar Custom locations
+   - **location**:
+    `/admmin`
+   - **Forward Hostname/IP**: `miip`
+   - **Forward Port**: `81`
+   - **location**:
+    `/api/tasks/`
+   - **Forward Hostname/IP**: `miip`
+   - **Forward Port**: `5001`
+   - **location**:
+    `user-service`
+   - **Forward Hostname/IP**: `miip`
+   - **Forward Port**: `5000`
 ---
 
 ## 🧹 Detener los servicios
