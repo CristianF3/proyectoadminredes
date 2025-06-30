@@ -2,12 +2,13 @@ from sqlalchemy import Column, Integer, String, Enum, ForeignKey
 from app.database import Base
 import enum
 
-# Enum para estados válidos
+#Enum para estados válidos
 class TaskStatus(str, enum.Enum):
     pendiente = "pendiente"
     en_progreso = "en_progreso"
     completada = "completada"
 
+#estructura de la base de datos
 class Task(Base):
     __tablename__ = "tasks"
 

@@ -2,66 +2,90 @@ services:
 
   user-service:
     build:
-      context: ./user-service
+      #Construye la imagen desde el Dockerfile
+      context: ./user-service 
     container_name: user-service
     networks:
+      #Se conecta a la red interna
       - backend-network
     environment:
+      #Variable de entorno SQLite
       - DATABASE_URL=sqlite:///./user_service.db
     volumes:
+      #Volumen para persistir datos
       - user_data:/app/data
     healthcheck:
+      #Verifica la salud del servicio
       test: ["CMD", "curl", "-f", "http://user-service:5000/api/users/health"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s 
     expose:
+      #Expone el puerto 5000 internamente
       - "5000"
 
   task-service:
     build:
+      #Construye la imagen desde el Dockerfile
       context: ./task-service
     container_name: task-service
     networks:
+      #Se conecta a la red interna
       - backend-network
     environment:
+      #Variable de entorno SQLite
       - DATABASE_URL=sqlite:///./task_service.db
+      #Comunicación con user-service
       - USER_SERVICE_URL=http://user-service:5000
     volumes:
+      #Volumen para persistir datos
       - task_data:/app/data
     healthcheck:
+      #Verifica la salud del servicio
       test: ["CMD", "curl", "-f", "http://task-service:5001/api/tasks/health"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s 
     expose:
+      #Expone el puerto 5001 internamente
       - "5001"
 
   nginx-proxy-manager:
+    #Usa la imagen oficial
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
     restart: always
     ports:
-      - "80:80"       # HTTP
-      - "443:443"     # HTTPS
-      - "81:81"       # Dashboard admin NPM
+      #HTTP
+      - "80:80" 
+      #HTTPS
+      - "443:443" 
+      #Dashboard admin NPM    
+      - "81:81"    
     networks:
+      #Se conecta a la red interna
       - backend-network
     volumes:
+      #Datos de configuración de Nginx Proxy Manager
       - npm_data:/data
+      #Para certificados SSL
       - npm_letsencrypt:/etc/letsencrypt
     healthcheck:
+      #Verifica la salud del servicio
       test: ["CMD", "curl", "-f",  "http://localhost:81"]
       timeout: 10s
       retries: 3
       start_period: 60s  
 
+#Red interna
 networks:
   backend-network:
+    #Red interna aislada
     driver: bridge
 
+#Volúmenes persistentes para bases de datos y configuración
 volumes:
   user_data:
   task_data:
