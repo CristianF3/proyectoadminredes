@@ -23,8 +23,9 @@ Antes de comenzar, asegúrate de tener instalado:
 1. Clona este repositorio:
 
 ```bash
-git clone https://github.com/tu-usuario/nombre-del-repo.git
-cd nombre-del-repo
+git clone https://github.com/CristianF3/proyectoadminredes.git
+cd proyectoadminredes
+cd MicroserviciosU2-3
 ```
 
 2. Construye y levanta los servicios:
