@@ -72,8 +72,6 @@ services:
       - npm_data:/data
       #Para certificados SSL
       - npm_letsencrypt:/etc/letsencrypt
-      #configuracion
-      - ./nginx-config/custom.conf:/etc/nginx/conf.d/custom.conf:ro
     healthcheck:
       #Verifica la salud del servicio
       test: ["CMD", "curl", "-f",  "http://localhost:81"]
