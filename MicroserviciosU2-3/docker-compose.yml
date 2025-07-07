@@ -4,7 +4,11 @@ services:
     build:
       #Construye la imagen desde el Dockerfile
       context: ./user-service 
-    container_name: user-service
+    #replicas  
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
     networks:
       #Se conecta a la red interna
       - backend-network
@@ -24,12 +28,18 @@ services:
     expose:
       #Expone el puerto 5000 internamente
       - "5000"
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
 
   task-service:
     build:
       #Construye la imagen desde el Dockerfile
       context: ./task-service
-    container_name: task-service
+    #replicas 
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
     networks:
       #Se conecta a la red interna
       - backend-network
@@ -51,6 +61,8 @@ services:
     expose:
       #Expone el puerto 5001 internamente
       - "5001"
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
 
   nginx-proxy-manager:
     #Usa la imagen oficial
@@ -77,7 +89,10 @@ services:
       test: ["CMD", "curl", "-f",  "http://localhost:81"]
       timeout: 10s
       retries: 3
-      start_period: 60s  
+      start_period: 60s 
+    depends_on:
+      - user-service
+      - task-service
 
 #Red interna
 networks:
